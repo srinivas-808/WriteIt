@@ -2,7 +2,7 @@ from flask import Flask, request, jsonify, send_from_directory, render_template
 import os
 from generate_handwritten_text import generate_text_image
 
-app = Flask(__name__, static_folder="../frontend", template_folder="../frontend")
+app = Flask(__name__, static_folder="frontend", template_folder="frontend")
 
 # Output directory
 OUTPUT_FOLDER = "output"
@@ -11,7 +11,7 @@ if not os.path.exists(OUTPUT_FOLDER):
 
 @app.route('/<path:filename>')
 def serve_static(filename):
-    return send_from_directory("../frontend", filename)
+    return send_from_directory("frontend", filename)
 
 @app.route("/")
 def index():
