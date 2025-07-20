@@ -1,22 +1,20 @@
 📝 Handwriting Generator with Custom Fonts
 This project is a web-based application that allows users to convert typed text into a handwritten-style image. What makes it unique is the ability for users to upload their own handwriting samples, extract individual characters, manually map them, and then use their personalized font to generate text.
-
+ 
+ Demo:
+ You can try the demo of this tool Here: https://writeit-25w6.onrender.com
 ✨ Features
 Upload Handwritten Documents: Easily upload an image of your handwriting.
 
 Automatic Character Extraction: The backend processes your uploaded image to automatically identify and extract individual characters.
 
-Manual Character Mapping: A dedicated interface to manually assign extracted image snippets to their corresponding characters (e.g., associating char_abc.png with 'a'). This ensures accuracy for complex or unique characters, including handling of 'i' and 'j' dots.
+Manual Character Mapping: A dedicated interface to manually assign extracted image snippets to their corresponding characters (e.g., associating char_abc.png with 'a'). This ensures accuracy for complex or unique characters.
 
 Multi-Font Support: Organize and manage multiple custom handwriting fonts, allowing you to switch between different styles.
 
 Handwritten Text Generation: Type any text, select your desired custom font, and generate a high-quality image of that text in your unique handwriting style.
 
 Responsive Web Interface: A user-friendly web interface built with HTML, CSS, and JavaScript.
-
-Improved Character Handling: Enhanced extraction logic for characters like 'i' and 'j' to ensure dots and bodies are treated as single characters.
-
-Accurate Descender Placement: Correct rendering of descenders (e.g., 'g', 'j', 'p', 'q', 'y') to extend below the baseline for a natural handwritten look.
 
 User-Friendly Font Naming: Assign custom, human-readable names to your uploaded fonts.
 
@@ -37,39 +35,11 @@ CSS3: Styling and responsiveness.
 
 JavaScript: Client-side logic for interactions and API calls.
 
-📁 File Structure
-.
-├── backend/
-│   ├── app.py                      # Flask application main file
-│   ├── extract_letters.py          # Script for extracting characters from images
-│   ├── generate_handwritten_text.py# Script for generating text images from characters
-│   ├── requirements.txt            # Python dependencies
-│   ├── uploads/                    # Directory for temporary storage of uploaded handwriting images
-│   ├── output/                     # Directory for generated handwritten text images
-│   └── extracted_fonts/            # Base directory for all extracted fonts
-│       ├── font_uniqueid1/         # Subfolder for a specific font
-│       │   ├── char_timestamp_id_1.png # Extracted character image
-│       │   ├── char_timestamp_id_2.png
-│       │   └── character_mapping.json # JSON mapping for this font (char: filename)
-│       │   └── metadata.json       # Stores user-friendly font name
-│       ├── font_uniqueid2/
-│       │   └── ...
-│       └── ...
-├── frontend/
-│   ├── index.html                  # Main page for font management (upload/select)
-│   ├── map.html                    # Page for manual character mapping
-│   ├── edit.html                   # Page for text editing and generation
-│   ├── style.css                   # Global styles for the application
-│   ├── index_script.js             # JavaScript for the index.html page
-│   ├── map_script.js               # JavaScript for the map.html page
-│   └── edit_script.js              # JavaScript for the edit.html page
-└── README.md                       # This README file
-
 ⚙️ Setup Instructions
 Follow these steps to get the project up and running on your local machine.
 
 Prerequisites
-Python 3.8+
+Python 3.10+
 
 pip (Python package installer)
 
