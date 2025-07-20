@@ -1,3 +1,8 @@
+// frontend/index_script.js
+
+// REMOVE Firebase imports and auth_utils import
+// import { authenticatedFetch } from './auth_utils.js'; // REMOVE THIS LINE
+
 document.addEventListener("DOMContentLoaded", function () {
     const handwritingUpload = document.getElementById("handwriting-upload");
     const uploadBtn = document.getElementById("upload-btn");
@@ -6,10 +11,27 @@ document.addEventListener("DOMContentLoaded", function () {
     const goToMapBtn = document.getElementById("go-to-map-btn");
     const goToEditBtn = document.getElementById("go-to-edit-btn");
     const newFontNameInput = document.getElementById("new-font-name");
+    const deleteFontBtn = document.getElementById("delete-font-btn");
 
-    let activeFontId = null;
+    let activeFontId = null; // This will be updated by loadFonts and fontSelect change
+
+    // No need for window.addEventListener('authReady') anymore
+    loadFonts(); // Load fonts directly when DOM is ready
+
+    function updateButtonVisibility() {
+        if (fontSelect.value) { // If a font is selected
+            goToMapBtn.style.display = "inline-block";
+            goToEditBtn.style.display = "inline-block";
+            deleteFontBtn.style.display = "inline-block"; // Show delete button
+        } else {
+            goToMapBtn.style.display = "none";
+            goToEditBtn.style.display = "none";
+            deleteFontBtn.style.display = "none"; // Hide delete button
+        }
+    }
 
     function loadFonts() {
+        // Replace authenticatedFetch with standard fetch
         fetch("/get_fonts")
             .then(response => response.json())
             .then(data => {
@@ -21,32 +43,44 @@ document.addEventListener("DOMContentLoaded", function () {
                         option.textContent = font.name;
                         fontSelect.appendChild(option);
                     });
-                    // Try to re-select if an active font was known
-                    fetch("/get_active_font") // New route to get current active font
+                    
+                    // Replace authenticatedFetch with standard fetch
+                    fetch("/get_active_font") // Get current active font
                         .then(resp => resp.json())
                         .then(activeFontData => {
                             if (activeFontData.success && activeFontData.active_font_id) {
                                 activeFontId = activeFontData.active_font_id;
                                 fontSelect.value = activeFontId;
-                                currentFontDisplay.textContent = `Active Font: ${activeFontId}`;
-                                goToMapBtn.style.display = "inline-block";
-                                goToEditBtn.style.display = "inline-block";
+                                currentFontDisplay.textContent = `Active Font: ${activeFontData.active_font_name}`;
                             } else {
+                                activeFontId = null;
+                                fontSelect.value = ""; // No active font selected
                                 currentFontDisplay.textContent = "Active Font: None Selected";
-                                goToMapBtn.style.display = "none";
-                                goToEditBtn.style.display = "none";
                             }
+                            updateButtonVisibility(); // Update button visibility after setting active font
+                        })
+                        .catch(error => {
+                            console.error("Error fetching active font on load:", error);
+                            currentFontDisplay.textContent = "Active Font: Error";
+                            updateButtonVisibility();
                         });
+
                 } else {
                     console.error("Failed to load fonts:", data.error);
+                    currentFontDisplay.textContent = "Active Font: Error Loading";
+                    updateButtonVisibility();
                 }
             })
-            .catch(error => console.error("Error loading fonts:", error));
+            .catch(error => {
+                console.error("Fetch Error loading fonts:", error);
+                updateButtonVisibility();
+            });
     }
 
     fontSelect.addEventListener("change", function() {
         const selectedFontId = fontSelect.value;
         if (selectedFontId) {
+            // Replace authenticatedFetch with standard fetch
             fetch("/set_active_font", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -56,34 +90,47 @@ document.addEventListener("DOMContentLoaded", function () {
             .then(data => {
                 if (data.success) {
                     activeFontId = selectedFontId;
-                    currentFontDisplay.textContent = `Active Font: ${activeFontId}`;
+                    const selectedOption = fontSelect.options[fontSelect.selectedIndex];
+                    currentFontDisplay.textContent = `Active Font: ${selectedOption.textContent}`;
                     console.log(data.message);
-                    goToMapBtn.style.display = "inline-block";
-                    goToEditBtn.style.display = "inline-block";
                 } else {
                     console.error("Failed to set active font:", data.error);
                     alert("Failed to set active font: " + data.error);
+                    fontSelect.value = activeFontId;
                 }
+                updateButtonVisibility();
             })
-            .catch(error => console.error("Error setting active font:", error));
+            .catch(error => {
+                console.error("Fetch Error setting active font:", error);
+                alert("Fetch Error: " + error.message);
+                fontSelect.value = activeFontId;
+                updateButtonVisibility();
+            });
         } else {
             activeFontId = null;
             currentFontDisplay.textContent = "Active Font: None Selected";
-            goToMapBtn.style.display = "none";
-            goToEditBtn.style.display = "none";
+            updateButtonVisibility();
         }
     });
 
     uploadBtn.addEventListener("click", function () {
         const file = handwritingUpload.files[0];
+        const fontName = newFontNameInput.value.trim();
+
         if (!file) {
             alert("Please select a handwriting image to upload.");
+            return;
+        }
+        if (!fontName) {
+            alert("Please enter a name for your new font.");
             return;
         }
 
         const formData = new FormData();
         formData.append("file", file);
+        formData.append("font_name", fontName);
 
+        // Replace authenticatedFetch with standard fetch
         fetch("/upload_handwriting", {
             method: "POST",
             body: formData
@@ -94,29 +141,63 @@ document.addEventListener("DOMContentLoaded", function () {
                 alert(data.message);
                 activeFontId = data.font_id; // Set the newly uploaded font as active
                 loadFonts(); // Reload fonts to show the new one and select it
-                // No immediate redirection, user can choose map or edit
+                newFontNameInput.value = '';
             } else {
                 alert("Upload failed: " + data.error);
             }
+            updateButtonVisibility();
         })
-        .catch(error => console.error("Upload Error:", error));
+        .catch(error => {
+            console.error("Upload Error:", error);
+            updateButtonVisibility();
+        });
+    });
+
+    // NEW: Delete Font Button Click (Logic remains largely the same)
+    deleteFontBtn.addEventListener("click", function() {
+        const selectedFontId = fontSelect.value;
+        const selectedFontName = fontSelect.options[fontSelect.selectedIndex].textContent;
+
+        if (!selectedFontId) {
+            alert("Please select a font to delete.");
+            return;
+        }
+
+        if (confirm(`Are you sure you want to delete the font "${selectedFontName}"? This action cannot be undone.`)) {
+            // Replace authenticatedFetch with standard fetch
+            fetch("/delete_font", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ font_id: selectedFontId })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert(data.message);
+                    loadFonts(); // Reload fonts list
+                } else {
+                    alert("Failed to delete font: " + data.error);
+                }
+            })
+            .catch(error => console.error("Delete Font Error:", error));
+        }
     });
 
     goToMapBtn.addEventListener("click", function() {
-        if (activeFontId) {
-            window.location.href = `/map`; // Redirect to mapping page
+        const selectedFontId = fontSelect.value;
+        if (selectedFontId) {
+            window.location.href = `/map`;
         } else {
             alert("Please select a font first.");
         }
     });
 
     goToEditBtn.addEventListener("click", function() {
-        if (activeFontId) {
-            window.location.href = `/edit`; // Redirect to editing page
+        const selectedFontId = fontSelect.value;
+        if (selectedFontId) {
+            window.location.href = `/edit`;
         } else {
             alert("Please select a font first.");
         }
     });
-
-    loadFonts(); // Initial load
 });

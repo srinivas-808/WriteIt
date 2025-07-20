@@ -5,7 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Handwriting Font Manager</title>
     <link rel="stylesheet" href="style.css">
-    <script src="index_script.js" defer></script> </head>
+    
+    <script src="index_script.js" defer></script>
+</head>
 <body>
     <div class="container">
         <h1>📂 Handwriting Font Manager</h1>
@@ -17,12 +19,14 @@
             <p id="current-font-display-index" style="font-weight: bold; margin-top: 10px;">Active Font: None Selected</p>
             <button id="go-to-map-btn" style="margin-top: 10px; display: none;">Go to Mapping for this Font</button>
             <button id="go-to-edit-btn" style="margin-top: 10px; display: none;">Go to Editor with this Font</button>
+            <button id="delete-font-btn" style="margin-top: 10px; display: none; background-color: #dc3545;">🗑️ Delete Selected Font</button>
         </div>
 
         <hr style="margin: 30px 0;">
 
         <h2>Upload New Handwriting</h2>
         <input type="file" id="handwriting-upload" accept="image/*">
+        <input type="text" id="new-font-name" placeholder="Enter a name for this font (e.g., 'My Cursive')" style="width: 100%; max-width: 300px; margin: 10px 0; padding: 8px; border-radius: 4px; border: 1px solid #ccc;">
         <button id="upload-btn">⬆️ Upload & Extract New Font</button>
     </div>
 </body>
