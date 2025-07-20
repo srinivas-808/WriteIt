@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Map Handwriting Characters</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="map_script.js" defer></script> </head>
+<body>
+    <div class="container">
+        <h1>🛠️ Map Your Handwriting Characters</h1>
+        <p>Currently mapping font: <span id="current-font-display-map" style="font-weight: bold;">Loading...</span></p>
+        <p>For each extracted image, enter the corresponding character. Leave blank if not needed.</p>
+        
+        <div id="character-display" style="display: flex; flex-wrap: wrap; justify-content: center; border: 1px solid #eee; padding: 10px; border-radius: 8px; background-color: #f9f9f9;"></div>
+        
+        <button id="save-mapping-btn" style="margin-top: 20px;">💾 Save Mapping</button>
+        <a href="/edit" class="button-link">Go to Editor</a> <a href="/" class="button-link" style="background-color: #6c757d;">Back to Font Management</a>
+    </div>
+</body>
+</html>

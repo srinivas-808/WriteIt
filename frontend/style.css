@@ -123,3 +123,29 @@ img {
         transform: translateY(0);
     }
 }
+
+/* ... (existing styles) ... */
+
+.button-link {
+    display: inline-block;
+    margin-top: 15px;
+    padding: 12px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    background: #007BFF; /* Primary button color */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+    text-decoration: none; /* Remove underline */
+}
+
+.button-link:hover {
+    background: #0056b3;
+}
+
+.button-link:active {
+    background: #004085;
+    transform: scale(0.98);
+}

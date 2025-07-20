@@ -3,21 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Handwriting Generator</title>
+    <title>Handwriting Font Manager</title>
     <link rel="stylesheet" href="style.css">
-    <script src="script.js" defer></script>
-</head>
+    <script src="index_script.js" defer></script> </head>
 <body>
     <div class="container">
-        <h1>📝 Handwriting Generator</h1>
-        <p>Type your text below and generate a handwritten-style image.</p>
+        <h1>📂 Handwriting Font Manager</h1>
+        <p>Upload a new handwriting sample or select an existing font to use.</p>
         
-        <textarea id="text-input" rows="5" cols="50" placeholder="Enter your text here..."></textarea>
-        <button id="generate-btn">✍️ Generate</button>
-
-        <div class="output-container">
-            <img id="generated-image" src="" alt="Generated Handwriting">
+        <div style="margin-bottom: 20px;">
+            <h2>Select Existing Font</h2>
+            <select id="font-select"></select>
+            <p id="current-font-display-index" style="font-weight: bold; margin-top: 10px;">Active Font: None Selected</p>
+            <button id="go-to-map-btn" style="margin-top: 10px; display: none;">Go to Mapping for this Font</button>
+            <button id="go-to-edit-btn" style="margin-top: 10px; display: none;">Go to Editor with this Font</button>
         </div>
+
+        <hr style="margin: 30px 0;">
+
+        <h2>Upload New Handwriting</h2>
+        <input type="file" id="handwriting-upload" accept="image/*">
+        <button id="upload-btn">⬆️ Upload & Extract New Font</button>
     </div>
 </body>
 </html>

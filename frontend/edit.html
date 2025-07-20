@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Handwriting Editor</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="edit_script.js" defer></script> </head>
+<body>
+    <div class="container">
+        <h1>✍️ Handwriting Editor</h1>
+        <p>Currently using font: <span id="current-font-display-edit" style="font-weight: bold;">Loading...</span></p>
+        <p>Type your text below and generate a handwritten-style image.</p>
+        
+        <textarea id="text-input" rows="10" cols="60" placeholder="Enter your text here..."></textarea>
+        <button id="generate-btn">✨ Generate Handwriting</button>
+
+        <div class="output-container">
+            <img id="generated-image" src="" alt="Generated Handwriting">
+        </div>
+
+        <a href="/map" class="button-link" style="margin-top: 20px;">Go to Character Mapping</a>
+        <a href="/" class="button-link" style="background-color: #6c757d;">Back to Font Management</a>
+    </div>
+</body>
+</html>
